@@ -34,7 +34,7 @@ class _HomeState extends State<Home> {
       if (response.statusCode == 200) {
         var resJson = jsonDecode(response.body);
         if (resJson['query']['search'] != null) {
-          print(resJson['query']['search']);
+          // print(resJson['query']['search']);
           return (resJson['query']['search'] as List)
               .map((f) => Articles.fromJson(f))
               .toList();
@@ -81,49 +81,87 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: false,
-        leading: Icon(Icons.book),
-        title: Text('Wikibook'),
-      ),
-      body: Container(
-        padding: EdgeInsets.all(20),
-        child: Column(
+      resizeToAvoidBottomInset: false,
+        body: Stack(
+      children: <Widget>[
+        Column(
           children: <Widget>[
-            TextField(
+            Container(
+              color: Colors.blue,
+              height: MediaQuery.of(context).size.height * .2,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Icon(Icons.book, size: 40, color: Colors.white),
+                  Text('WIKIBOOKS', style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 35,
+                    fontWeight: FontWeight.bold
+                  ),)
+                ],
+              ),
+            ),
+            Container(
+              color: Colors.white,
+              height: MediaQuery.of(context).size.height * .8,
+            )
+          ],
+        ),
+        Positioned(
+          top: 120,
+          left: 30,
+          right: 30,
+          child: AppBar(
+            elevation: 5.0,
+            primary: false,
+            leading: Icon(Icons.book, color: Colors.blue),
+            backgroundColor: Colors.white,
+            title: TextField(
               controller: _keyword,
               decoration: InputDecoration(
-                  labelText: "Cari Sesuatu ?",
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10)),
-                  suffixIcon: FlatButton(
+                  hintText: "Cari Sesuatu ?",
+                  border: InputBorder.none,
+              )
+            ),
+            actions: <Widget>[
+               FlatButton(
                     onPressed: () {
                       _searching();
                       setState(() {});
                     },
                     child: Icon(Icons.search),
                     textColor: Colors.blue,
-                  )),
-            ),
-            Expanded(
-              flex: 1,
-              child: FutureBuilder(
-                future: fetchPost(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return DisplayData(datas: snapshot.data);
-                  } else if (snapshot.hasError) {
-                    return Text('Failed Fetching data');
-                  }
-                  return _keyword.text == ""
-                      ? Text('')
-                      : Center(child: CircularProgressIndicator());
-                },
-              ),
-            )
-          ],
+                  )
+            ],
+          ),
         ),
-      ),
+        Container(
+          padding: EdgeInsets.only(
+            top: MediaQuery.of(context).size.height * .230,
+            left: 20,
+            right: 20,
+            bottom: 25
+          ),
+          child: Getdata()
+          )
+      ],
+    )
+    );
+  }
+
+  Widget Getdata() {
+    return FutureBuilder(
+      future: fetchPost(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return DisplayData(datas: snapshot.data);
+        } else if (snapshot.hasError) {
+          return Text('Failed Fetching data');
+        }
+        return _keyword.text == ""
+            ? Text('')
+            : Center(child: CircularProgressIndicator());
+      },
     );
   }
 }
@@ -147,10 +185,12 @@ class DisplayData extends StatelessWidget {
                     MaterialPageRoute(
                         builder: (context) => Detail(
                             title: datas[idx].title,
+                            pageid: datas[idx].pageId.toString(),
                             description: datas[idx].snippet)));
               },
               child: Card(
-                  child: Column(
+                elevation: 3,
+                child: Column(
                 children: <Widget>[
                   ListTile(
                     title: Text('${datas[idx].title}'),

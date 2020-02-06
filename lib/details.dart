@@ -1,16 +1,25 @@
 import 'package:flutter/material.dart';
+import 'detailsview.dart';
 
 class Detail extends StatefulWidget {
   final String title;
   final String description;
-
-  Detail({Key key, this.title, this.description}) : super(key: key);
+  final String pageid;
+  Detail({Key key, this.title, this.description, this.pageid})
+      : super(key: key);
 
   @override
   _DetailState createState() => _DetailState();
 }
 
 class _DetailState extends State<Detail> {
+
+  void navigationWeb(){
+    Navigator.push(context, MaterialPageRoute(builder: (context) => DetailsView(
+      pageid: widget.pageid,
+    )));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,14 +31,18 @@ class _DetailState extends State<Detail> {
         children: <Widget>[
           Container(
             margin: EdgeInsets.only(top: 20),
-            child: Text(widget.title,
-                style: TextStyle(
-                  color: Colors.blue,
-                  fontSize: 30,
-                )),
+            child: Text(
+              widget.title,
+              style: TextStyle(
+                color: Colors.blue,
+                fontSize: 30,
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 10,
           ),
           Container(
-            margin: EdgeInsets.only(top: 20),
             child: Text(
                 widget.description
                     .replaceAll('<span class=\"searchmatch\">', '')
@@ -39,6 +52,23 @@ class _DetailState extends State<Detail> {
                   color: Colors.black,
                   fontSize: 20,
                 )),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          RaisedButton(
+            onPressed: () {
+              navigationWeb();
+            },
+            color: Colors.blue,
+            elevation: 3,
+            child: Text(
+              'Baca selengkapnya',
+              style: TextStyle(
+                fontSize: 18,
+                color: Colors.white,
+              ),
+            ),
           )
         ],
       ),
