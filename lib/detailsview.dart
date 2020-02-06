@@ -17,7 +17,7 @@ class DetailsViewState extends State<DetailsView> {
   void initState(){
     super.initState();
     setState(() {
-     urlEndpoint = "https://id.wikipedia.org/?curid=${widget.pageid}"; 
+     urlEndpoint = "https://id.m.wikipedia.org/?curid=${widget.pageid}"; 
     });
   }
 
