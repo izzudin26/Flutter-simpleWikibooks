@@ -189,7 +189,6 @@ class DisplayData extends StatelessWidget {
                             description: datas[idx].snippet)));
               },
               child: Card(
-                elevation: 3,
                 child: Column(
                 children: <Widget>[
                   ListTile(

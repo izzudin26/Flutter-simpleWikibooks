@@ -1,4 +1,4 @@
-package com.example.wikibook
+package com.izzudev.wikibook
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity
