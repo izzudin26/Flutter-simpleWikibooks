@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wikibook/home.dart';
+import 'package:wikibook/login.dart';
+import 'package:wikibook/splash.dart';
 
 void main() => runApp(MyApp());
 
@@ -12,7 +14,11 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: Home(),
+      home: Splash(),
+      routes: <String, WidgetBuilder>{
+        '/home': (BuildContext context) => Home(),
+        '/auth': (BuildContext context) => Login()
+      },
     );
   }
 }

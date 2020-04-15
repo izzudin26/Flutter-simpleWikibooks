@@ -3,6 +3,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:wikibook/details.dart';
+import 'package:wikibook/service/auth.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -81,50 +82,51 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+        resizeToAvoidBottomInset: false,
         body: Stack(
-      children: <Widget>[
-        Column(
           children: <Widget>[
-            Container(
-              color: Colors.blue,
-              height: MediaQuery.of(context).size.height * .2,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Icon(Icons.book, size: 40, color: Colors.white),
-                  Text('WIKIBOOKS', style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 35,
-                    fontWeight: FontWeight.bold
-                  ),)
-                ],
-              ),
+            Column(
+              children: <Widget>[
+                Container(
+                  color: Colors.blue,
+                  height: MediaQuery.of(context).size.height * .2,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Icon(Icons.book, size: 40, color: Colors.white),
+                      Text(
+                        'WIKIBOOKS',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 35,
+                            fontWeight: FontWeight.bold),
+                      )
+                    ],
+                  ),
+                ),
+                Container(
+                  color: Colors.white,
+                  height: MediaQuery.of(context).size.height * .8,
+                )
+              ],
             ),
-            Container(
-              color: Colors.white,
-              height: MediaQuery.of(context).size.height * .8,
-            )
-          ],
-        ),
-        Positioned(
-          top: 120,
-          left: 30,
-          right: 30,
-          child: AppBar(
-            elevation: 5.0,
-            primary: false,
-            leading: Icon(Icons.book, color: Colors.blue),
-            backgroundColor: Colors.white,
-            title: TextField(
-              controller: _keyword,
-              decoration: InputDecoration(
-                  hintText: "Cari Sesuatu ?",
-                  border: InputBorder.none,
-              )
-            ),
-            actions: <Widget>[
-               FlatButton(
+            Positioned(
+              top: MediaQuery.of(context).size.height * 0.15,
+              left: 30,
+              right: 30,
+              child: AppBar(
+                elevation: 5.0,
+                primary: false,
+                leading: Icon(Icons.book, color: Colors.blue),
+                backgroundColor: Colors.white,
+                title: TextField(
+                    controller: _keyword,
+                    decoration: InputDecoration(
+                      hintText: "Cari Sesuatu ?",
+                      border: InputBorder.none,
+                    )),
+                actions: <Widget>[
+                  FlatButton(
                     onPressed: () {
                       _searching();
                       setState(() {});
@@ -132,21 +134,18 @@ class _HomeState extends State<Home> {
                     child: Icon(Icons.search),
                     textColor: Colors.blue,
                   )
-            ],
-          ),
-        ),
-        Container(
-          padding: EdgeInsets.only(
-            top: MediaQuery.of(context).size.height * .230,
-            left: 20,
-            right: 20,
-            bottom: 25
-          ),
-          child: Getdata()
-          )
-      ],
-    )
-    );
+                ],
+              ),
+            ),
+            Container(
+                padding: EdgeInsets.only(
+                    top: MediaQuery.of(context).size.height * .230,
+                    left: 20,
+                    right: 20,
+                    bottom: 25),
+                child: Getdata())
+          ],
+        ));
   }
 
   Widget Getdata() {
@@ -189,14 +188,19 @@ class DisplayData extends StatelessWidget {
                             description: datas[idx].snippet)));
               },
               child: Card(
-                child: Column(
+                  child: Column(
                 children: <Widget>[
                   ListTile(
                     title: Text('${datas[idx].title}'),
                   )
                 ],
               )),
-            )
+            ),
+            RaisedButton(onPressed: () {
+              Authservices auth = new Authservices();
+              auth.logOut();
+              Navigator.of(context).pushReplacementNamed('/auth');
+            })
           ],
         );
       },

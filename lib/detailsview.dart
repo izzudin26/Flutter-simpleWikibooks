@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:webview_flutter/webview_flutter.dart';
 
 class DetailsView extends StatefulWidget {
@@ -12,12 +11,13 @@ class DetailsView extends StatefulWidget {
 
 class DetailsViewState extends State<DetailsView> {
   String urlEndpoint;
-  final Completer<WebViewController> _controller = Completer<WebViewController>();
+  final Completer<WebViewController> _controller =
+      Completer<WebViewController>();
 
-  void initState(){
+  void initState() {
     super.initState();
     setState(() {
-     urlEndpoint = "https://id.m.wikipedia.org/?curid=${widget.pageid}"; 
+      urlEndpoint = "https://id.m.wikipedia.org/?curid=${widget.pageid}";
     });
   }
 
@@ -27,7 +27,7 @@ class DetailsViewState extends State<DetailsView> {
       body: WebView(
         initialUrl: urlEndpoint,
         javascriptMode: JavascriptMode.unrestricted,
-        onWebViewCreated: (WebViewController webviewcontroller){
+        onWebViewCreated: (WebViewController webviewcontroller) {
           _controller.complete(webviewcontroller);
         },
       ),
